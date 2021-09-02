@@ -11,22 +11,9 @@ function getClima() {
         dataType: 'json',
 
         success: function (data) {
-
-            $('#temperatura').html(Math.round(data.main.temp - 273.15) + '°C');
-
-            let icone = 'img/' + data.weather[0].icon + '.png';
-            $('#iconeCondicao').attr('src', icone);
-
-            $('#condicao').html(data.weather[0].description);
-
-            $('#velocidade').html(data.wind.speed + 'm/s');
-
-            $('#umidade').html(data.main.humidity + '%');
-
-            $('#NascerDoSol').html(data.sys.sunrise);
-
-            $('#PorDoSol').html(data.sys.sunset);
-
+            plotarResultados(data);
+            localStorage.clima = JSON.stringify(data);
+            localStorage.alteracaoCache = new Date().getTime();
         },
 
         error: function (argument) {
@@ -39,8 +26,37 @@ function getClima() {
 
 }
 
+function plotarResultados(data) {
+    $('#temperatura').html(Math.round(data.main.temp - 273.15) + '°C');
+
+    let icone = 'img/' + data.weather[0].icon + '.png';
+    $('#iconeCondicao').attr('src', icone);
+
+    $('#condicao').html(data.weather[0].description);
+
+    $('#velocidade').html(data.wind.speed + 'm/s');
+
+    $('#umidade').html(data.main.humidity + '%');
+
+    $('#NascerDoSol').html(data.sys.sunrise);
+
+    $('#PorDoSol').html(data.sys.sunset);
+}
+
+function getDadosClima() {
+    let tempoAtual = new Date().getTime();
+    let tempoCache = parseInt(localStorage.alteracaoCache);
+    let diferencaTempos = tempoAtual - tempoCache;
+
+    if(diferencaTempos >300000) {
+        getClima();
+    } else {
+        let data = JSON.parse(localStorage.clima);
+        plotarResultados(data);
+    }
+
+}
+
 window.onload = function () {
-
-    getClima();
-
+    getDadosClima();
 };
