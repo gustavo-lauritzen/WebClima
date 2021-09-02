@@ -6,7 +6,7 @@ function getClima() {
 
         crossDomain: true,
 
-        url: 'http://api.openweathermap.org/data/2.5/weather?id=3468879&appid=5dbcf93728022eb77a883e8b0bd7b6e9&lang=pt_br',
+        url: 'https://api.openweathermap.org/data/2.5/weather?id=3468879&appid=5dbcf93728022eb77a883e8b0bd7b6e9&lang=pt_br',
 
         dataType: 'json',
 
